@@ -1,0 +1,2623 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="Application for making neons">
+  <meta name="keywords" content="generator, neon, make, own">
+  <meta name="author" content="Mateusz Olejarz">
+
+  <title>Neon Generator</title>
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+	<div class="wrapper">
+		<section class="doubleColumn">
+			<section class="neonViewWrapper">
+			    <div class="generatedNeonView">
+			      	<div class="lightLayer">
+			      		<div class="neon">
+			      			<div class="neonBackground glassOnly">
+			      				<div class="neonFont courgette">
+			      					<div class="neonText af5fdff">
+			      						<div class="neonSize standard">
+						  					<div id="neonTextFromInput">
+						  						Enter your text
+						  					</div>
+						  				</div>
+						  			</div>
+				  				</div>
+			      			</div>
+			      		</div>
+			      		<button class="turnLightButton" onfocus="lightUp();" onblur="lightDown();"><div class="buttonLayer"></div></button>
+			      		<div class="wire" id="wireone"></div>
+			      		<div class="wire scnd" id="wirescnd"></div>
+			      	</div>
+			    </div>
+	    	</section>
+		    <section class="below">
+			    <section class="dimensions">
+			    	<h1>Dimensions</h1>
+					<section class="optionBelow">
+						<div>
+							<div style="display: inline-block;width: 100px">Overall size:</div> <span id="overallSize">0 x 0 cm</span>
+						</div>
+						<div>
+							<div style="display: inline-block;width: 100px">Neon size:</div> <span id="neonSize">0 x 0 cm</span>
+						</div>
+						<section class="customDimension">
+							<h2>Customize your dimensions:</h2>
+							<div class="radiobtn">
+								<input type="radio" name="customized" id="width" value="Width" checked
+								data-checkedCustomizeOption="customWidth"
+									onclick="setCustomizeOption(this);";
+								/ >
+								<label for="width" class="width">
+									Width
+								</label>
+							</div>
+							<div class="radiobtn">
+								<input type="radio" name="customized" id="height" value="Height"
+								data-checkedCustomizeOption="customHeigth"
+									onclick="setCustomizeOption(this);";
+								/ >
+								<label for="height" class="height">
+									Height
+								</label>
+							</div>
+							<input id="enteredCustomDimension" class="customEnteredDimenstion" type="number" name="customMadeDimesion" placeholder="Enter dimension in cm" onkeyup="updateNeonView();">
+						</section>
+					</section>
+				</section>
+				<section class="estimatedcostSection">
+					<h1>Cost</h1>
+					<section class="optionBelow">
+						<div>
+							<div style="display: inline-block;width: 40px">Cost:</div> <span id="estimatedCost">0 €</span>
+						</div>
+					</section>
+				</section>
+			</section>
+		</section>
+
+		<form class="neonSettings">
+			<!--
+			Template to create radio buttons to add new font
+			
+			<div class="radiobtn">
+				<input type="radio" name="font" id="" value="Font Name"
+					data-neonFontName=""
+					data-neonBase="" data-neonLowercaseUp="" data-neonUppercaseUp="" data-neonLowercaseDown="" data-neonUppercaseDown="" data-neonNonStandardUp="" 
+					data-neonLetterWidth="" data-neonWhitespaceWidth="" data-neonUnexpectedSymbolWidth="" 
+					data-neonStandardSize="" data-neonMiddleSize="" data-neonLargeSize=""
+					data-neonOneLineLettersCost="" data-neonTwoLineLettersCost="" data-neonThreeLineLettersCost=""
+					onclick="fontSetter(this)";
+				/ >
+				<label for="">
+					Font Name
+				</label>
+			</div>
+			-->
+			<ul id="nav">
+				<li id="inputText">
+					<a href="#inputText">
+						<legend>Neon text</legend>
+					</a>
+					<ul>
+						<div class="wrapFlex">
+							<div class="inputWrapper">
+								<textarea class="neon-input" type="text" id="inserted_text" placeholder="Enter your text" onkeyup="updateNeonText();"></textarea>
+							</div>
+							<div class="wrapIcons">
+								<div class="wrapIcons">
+									<div style="margin: 5px 0; width: 100%; text-align: center; font-size: 12px;">Alignment</div>
+									<img data-neonAlign="align-left" src="images/align-left-solid.svg" width="25px" height="25px" onclick="changeAlign(this);">
+									<img data-neonAlign="align-center" src="images/align-center-solid.svg" width="30px" height="25px" onclick="changeAlign(this);">
+									<img data-neonAlign="align-right" src="images/align-right-solid.svg" width="25px" height="25px" onclick="changeAlign(this);">
+								</div>
+								<div class="wrapIcons">
+									<div style="margin: 5px 0; width: 100%; text-align: center; font-size: 12px;">Vertical spacing</div>
+									<img data-neonResizeLines="increase-line" id="arrow-v" src="images/minus.svg" width="25px" height="25px" onclick="resizeLines(this);">
+									<img data-neonResizeLines="increase-line-double" id="arrow-v" src="images/plus.svg" width="25px" height="25px" onclick="resizeLines(this);">
+									<img data-neonResizeLines="decrease-line" id="arrow-v" src="images/undo.svg" width="25px" height="25px" onclick="resizeLines(this);">
+								</div>
+								<div class="wrapIcons">
+									<div style="margin: 5px 0; width: 100%; text-align: center; font-size: 12px;">Horizontal spacing</div>
+									<img data-neonResizeLines="increase-line" id="arrow-v" src="images/minus.svg" width="25px" height="25px" onclick="resizeLinesHorizontal(this);">
+									<img data-neonResizeLines="increase-line-double" id="arrow-v" src="images/plus.svg" width="25px" height="25px" onclick="resizeLinesHorizontal(this);">
+									<img data-neonResizeLines="decrease-line" id="arrow-v" src="images/undo.svg" width="25px" height="25px" onclick="resizeLinesHorizontal(this);">
+								</div>
+							</div>
+						</div>
+					</ul>
+				</li>
+				<li id="fonts">
+					<a href="#fonts">
+						<legend>Font</legend>
+					</a>
+					<ul>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="courgette" value="Courgette" checked
+									data-neonFontName="courgette"
+									data-neonBase="6.98" data-neonLowercaseUp="3.49" data-neonUppercaseUp="4.53" data-neonLowercaseDown="3.49" data-neonUppercaseDown="3.49" data-neonNonStandardUp="3.49" 
+									data-neonLetterWidth="5.49" data-neonWhitespaceWidth="3.49" data-neonUnexpectedSymbolWidth="3.49" 
+									data-neonStandardSize="30px" data-neonMiddleSize="50px" data-neonLargeSize="70px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="courgette" class="courgette">
+									Squash Tea
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="walterTurncoat" value="Walter Turncoat"
+									data-neonFontName="walterTurncoat"
+									data-neonBase="6.98" data-neonLowercaseUp="0" data-neonUppercaseUp="4.53" data-neonLowercaseDown="0" data-neonUppercaseDown="0" data-neonNonStandardUp="0" 
+									data-neonLetterWidth="5.49" data-neonWhitespaceWidth="3" data-neonUnexpectedSymbolWidth="3" 
+									data-neonStandardSize="30px" data-neonMiddleSize="50px" data-neonLargeSize="70px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="walterTurncoat" class="walterTurncoat">
+									Crafty 
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="raleway" value="Raleway"
+									data-neonFontName="raleway"
+									data-neonBase="8.82" data-neonLowercaseUp="3.09" data-neonUppercaseUp="3.09" data-neonLowercaseDown="3.09" data-neonUppercaseDown="3.09" data-neonNonStandardUp="3.09" 
+									data-neonLetterWidth="8" data-neonWhitespaceWidth="3.5" data-neonUnexpectedSymbolWidth="4" 
+									data-neonStandardSize="30px" data-neonMiddleSize="50px" data-neonLargeSize="70px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="raleway" class="raleway">
+									Thin Weight
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="textMeOne" value="Text Me One"
+									data-neonFontName="textMeOne"
+									data-neonBase="7.89" data-neonLowercaseUp="3.16" data-neonUppercaseUp="3.16" data-neonLowercaseDown="3.95" data-neonUppercaseDown="3.95" data-neonNonStandardUp="3.16" 
+									data-neonLetterWidth="7" data-neonWhitespaceWidth="3.5" data-neonUnexpectedSymbolWidth="4.5" 
+									data-neonStandardSize="30px" data-neonMiddleSize="50px" data-neonLargeSize="70px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="textMeOne" class="textMeOne">
+									Neon Me
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="kanit" value="Kanit"
+									data-neonFontName="kanit"
+									data-neonBase="7.71" data-neonLowercaseUp="3" data-neonUppercaseUp="3" data-neonLowercaseDown="4.29" data-neonUppercaseDown="4.29" data-neonNonStandardUp="3" 
+									data-neonLetterWidth="7" data-neonWhitespaceWidth="3.5" data-neonUnexpectedSymbolWidth="3.5" 
+									data-neonStandardSize="30px" data-neonMiddleSize="50px" data-neonLargeSize="70px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="kanit" class="kanit">
+									Tank
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="bubblerOne" value="Bubbler One"
+									data-neonFontName="bubblerOne"
+									data-neonBase="7.5" data-neonLowercaseUp="2.63" data-neonUppercaseUp="3.75" data-neonLowercaseDown="3.75" data-neonUppercaseDown="3.75" data-neonNonStandardUp="2.63" 
+									data-neonLetterWidth="7" data-neonWhitespaceWidth="3.5" data-neonUnexpectedSymbolWidth="4.5" 
+									data-neonStandardSize="30px" data-neonMiddleSize="50px" data-neonLargeSize="70px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="bubblerOne" class="bubblerOne">
+									Straight Box
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="comfortaa" value="Comfortaa"
+									data-neonFontName="comfortaa"
+									data-neonBase="8.25" data-neonLowercaseUp="3.75" data-neonUppercaseUp="3.75" data-neonLowercaseDown="3" data-neonUppercaseDown="3" data-neonNonStandardUp="3.75" 
+									data-neonLetterWidth="8" data-neonWhitespaceWidth="3.5" data-neonUnexpectedSymbolWidth="4.5" 
+									data-neonStandardSize="28px" data-neonMiddleSize="48px" data-neonLargeSize="66px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="comfortaa" class="comfortaa">
+									Sunhouse
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="badScript" value="Bad Script"
+									data-neonFontName="badScript"
+									data-neonBase="5.27" data-neonLowercaseUp="1.94" data-neonUppercaseUp="5.3" data-neonLowercaseDown="4.43" data-neonUppercaseDown="4.43" data-neonNonStandardUp="1.94" 
+									data-neonLetterWidth="5" data-neonWhitespaceWidth="2" data-neonUnexpectedSymbolWidth="3" 
+									data-neonStandardSize="30px" data-neonMiddleSize="50px" data-neonLargeSize="70px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="badScript" class="badScript">
+									Regular Be
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="cedarvilleCursive" value="Cedarville Cursive"
+									data-neonFontName="cedarvilleCursive"
+									data-neonBase="5.74" data-neonLowercaseUp="2.55" data-neonUppercaseUp="4.16" data-neonLowercaseDown="5.1" data-neonUppercaseDown="5.1" data-neonNonStandardUp="2.55" 
+									data-neonLetterWidth="5" data-neonWhitespaceWidth="2" data-neonUnexpectedSymbolWidth="3" 
+									data-neonStandardSize="34px" data-neonMiddleSize="56px" data-neonLargeSize="80px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="cedarvilleCursive" class="cedarvilleCursive">
+									Longhand
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="sacramento" value="Sacramento"
+									data-neonFontName="sacramento"
+									data-neonBase="3.26" data-neonLowercaseUp="5.86" data-neonUppercaseUp="5.86" data-neonLowercaseDown="5.88" data-neonUppercaseDown="5.88" data-neonNonStandardUp="2.6" 
+									data-neonLetterWidth="3" data-neonWhitespaceWidth="3" data-neonUnexpectedSymbolWidth="2.5" 
+									data-neonStandardSize="34px" data-neonMiddleSize="56px" data-neonLargeSize="80px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="sacramento" class="sacramento">
+									California
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="vibur" value="Vibur"
+									data-neonFontName="vibur"
+									data-neonBase="5.22" data-neonLowercaseUp="4.56" data-neonUppercaseUp="4.56" data-neonLowercaseDown="5.22" data-neonUppercaseDown="5.22" data-neonNonStandardUp="1.962" 
+									data-neonLetterWidth="5" data-neonWhitespaceWidth="2.5" data-neonUnexpectedSymbolWidth="2.5" 
+									data-neonStandardSize="32px" data-neonMiddleSize="54px" data-neonLargeSize="74px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="vibur" class="vibur">
+									Graft V
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="arimaMadurai" value="Arima Madurai"
+									data-neonFontName="arimaMadurai"
+									data-neonBase="8.68" data-neonLowercaseUp="3.16" data-neonUppercaseUp="3.16" data-neonLowercaseDown="3.16" data-neonUppercaseDown="3.16" data-neonNonStandardUp="3.16" 
+									data-neonLetterWidth="7" data-neonWhitespaceWidth="3" data-neonUnexpectedSymbolWidth="4" 
+									data-neonStandardSize="30px" data-neonMiddleSize="50px" data-neonLargeSize="70px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="arimaMadurai" class="arimaMadurai">
+									Elm Street
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="poiretOne" value="Poiret One"
+									data-neonFontName="poiretOne"
+									data-neonBase="8.1" data-neonLowercaseUp="4.45" data-neonUppercaseUp="4.45" data-neonLowercaseDown="2.45" data-neonUppercaseDown="2.45" data-neonNonStandardUp="2.43" 
+									data-neonLetterWidth="7" data-neonWhitespaceWidth="3" data-neonUnexpectedSymbolWidth="3.5" 
+									data-neonStandardSize="32px" data-neonMiddleSize="54px" data-neonLargeSize="74px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="poiretOne" class="poiretOne">
+									Barges
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="waitingSunrise" value="Waiting for the Sunrise"
+									data-neonFontName="waitingSunrise"
+									data-neonBase="6.52" data-neonLowercaseUp="3.26" data-neonUppercaseUp="3.26" data-neonLowercaseDown="5.22" data-neonUppercaseDown="5.22" data-neonNonStandardUp="3.26" 
+									data-neonLetterWidth="6" data-neonWhitespaceWidth="2.5" data-neonUnexpectedSymbolWidth="3.5" 
+									data-neonStandardSize="34px" data-neonMiddleSize="56px" data-neonLargeSize="80px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="waitingSunrise" class="waitingSunrise">
+									Sunshine
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="sueEllen" value="Sue Ellen Francisco"
+									data-neonFontName="sueEllen"
+									data-neonBase="4.04" data-neonLowercaseUp="5.76" data-neonUppercaseUp="5.76" data-neonLowercaseDown="5.2" data-neonUppercaseDown="5.2" data-neonNonStandardUp="2.3" 
+									data-neonLetterWidth="4" data-neonWhitespaceWidth="2" data-neonUnexpectedSymbolWidth="2" 
+									data-neonStandardSize="32px" data-neonMiddleSize="54px" data-neonLargeSize="74px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="sueEllen" class="sueEllen">
+									Elephant
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="schoolbell" value="Schoolbell"
+									data-neonFontName="schoolbell"
+									data-neonBase="6.28" data-neonLowercaseUp="4.55" data-neonUppercaseUp="4.55" data-neonLowercaseDown="4.12" data-neonUppercaseDown="4.12" data-neonNonStandardUp="1.75" 
+									data-neonLetterWidth="6" data-neonWhitespaceWidth="3" data-neonUnexpectedSymbolWidth="3" 
+									data-neonStandardSize="30px" data-neonMiddleSize="50px" data-neonLargeSize="70px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="schoolbell" class="schoolbell">
+									Rhino
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="font" id="comingSoon" value="Coming Soon"
+									data-neonFontName="comingSoon"
+									data-neonBase="7.67" data-neonLowercaseUp="2.66" data-neonUppercaseUp="2.66" data-neonLowercaseDown="4.67" data-neonUppercaseDown="4.67" data-neonNonStandardUp="1.67" 
+									data-neonLetterWidth="6" data-neonWhitespaceWidth="3" data-neonUnexpectedSymbolWidth="3" 
+									data-neonStandardSize="30px" data-neonMiddleSize="50px" data-neonLargeSize="70px"
+									data-neonOneLineLettersCost="25" data-neonTwoLineLettersCost="35" data-neonThreeLineLettersCost="45"
+									onclick="fontSetter(this)";
+								/ >
+								<label for="comingSoon" class="comingSoon">
+									Hippo
+								</label>
+							</div>
+						</li>
+					</ul>
+				</li>
+					<!--
+						Template to create radio buttons to add new font color
+						<div class="radiobtn">
+							<input type="radio" name="color" id="a+ColorHexCode" value="Color Proffesional Name"
+							data-color="ColorHexCode"
+							onclick="colorSetter(this)";
+							/>
+							<label for="aColorHexCode">
+								Color Name
+							</label>
+						</div>
+					-->
+
+				<li id="colors">
+					<a href="#colors">
+						<legend>Color</legend>
+					</a>
+					<ul>
+						<div style="font-size: 20px; margin: 10px 0 10px 0;">
+							Powdered glass:
+						</div>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="af5fdff" value="Cold White" checked
+								data-color="af5fdff"
+								onclick="colorSetter(this)";
+								/>
+								<label for="af5fdff">
+									Cold White
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="afff4e6" value="Warm White"
+								data-color="afff4e6"
+								onclick="colorSetter(this)";
+								/>
+								<label for="afff4e6">
+									Warm White
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="affe7c8" value="Warmtone White"
+								data-color="affe7c8"
+								onclick="colorSetter(this)";
+								/>
+								<label for="affe7c8">
+									Warmtone White
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="aff88ab" value="Super Pink"
+								data-color="aff88ab"
+								onclick="colorSetter(this)";
+								/>
+								<label for="aff88ab">
+									Super Pink
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="aff8dec" value="Super Purple"
+								data-color="aff8dec"
+								onclick="colorSetter(this)";
+								/>
+								<label for="aff8dec">
+									Super Purple
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="af08cff" value="Orchid"
+								data-color="af08cff"
+								onclick="colorSetter(this)";
+								/>
+								<label for="af08cff">
+									Orchid
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="affa279" value="Salmon"
+								data-color="affa279"
+								onclick="colorSetter(this)";
+								/>
+								<label for="affa279">
+									Salmon
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="a75a9ff" value="Super Blue"
+								data-color="a75a9ff"
+								onclick="colorSetter(this)";
+								/>
+								<label for="a75a9ff">
+									Super Blue
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="a41f8fe" value="Turquoise"
+								data-color="a41f8fe"
+								onclick="colorSetter(this)";
+								/>
+								<label for="a41f8fe">
+									Turquoise
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="a00ff9d" value="Super Green"
+								data-color="a00ff9d"
+								onclick="colorSetter(this)";
+								/>
+								<label for="a00ff9d">
+									Super Green
+								</label>
+							</div>			
+						</li>
+						<div style="font-size: 20px; margin: 10px 0 10px 0;">
+							Coloured glass:
+						</div>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="aff0000" value="Ruby Red"
+								data-color="aff0000"
+								onclick="colorSetter(this)";
+								/>
+								<label for="aff0000">
+									Ruby Red
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="aff6a28" value="Orange"
+								data-color="aff6a28"
+								onclick="colorSetter(this)";
+								/>
+								<label for="aff6a28">
+									Orange
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="affaf02" value="Novial Gold" 
+								data-color="affaf02"
+								onclick="colorSetter(this)";
+								/>
+								<label for="affaf02">
+									Novial Gold
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="afffc01" value="Lemon Yellow"
+								data-color="afffc01"
+								onclick="colorSetter(this)";
+								/>
+								<label for="afffc01">
+									Lemon Yellow
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="a01ff2b" value="Emerald Green" 
+								data-color="a01ff2b"
+								onclick="colorSetter(this)";
+								/>
+								<label for="a01ff2b">
+									Emerald Green
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="a0172ff" value="Cobalt Blue"
+								data-color="a0172ff"
+								onclick="colorSetter(this)";
+								/>
+								<label for="a0172ff">
+									Cobalt Blue
+								</label>
+							</div>								
+						</li>
+						<div style="font-size: 20px; margin: 10px 0 10px 0;">
+							Transparent glass:
+						</div>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="ab1f3ff" value="Classic Blue"
+								data-color="ab1f3ff"
+								onclick="colorSetter(this)";
+								/>
+								<label for="ab1f3ff">
+									Classic Blue
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="color" id="affc478" value="Classic Red"
+								data-color="affc478"
+								onclick="colorSetter(this)";
+								/>
+								<label for="affc478">
+									Classic Red
+								</label>
+							</div>
+						</li>
+					</ul>
+				</li>
+					<!--
+						Template to create radio buttons to add new mounting options
+						<div class="radiobtn">
+							<input type="radio" name="mounting" id="" value="Background Type"
+							data-backgroundType=""
+							onclick="neonBackgroundSetter(this)";
+							/>
+							<label for="">
+								Mounting option
+							</label>
+						</div>
+					-->
+
+				<li id="mountingOpt">
+					<a href="#mountingOpt" class="flexii">
+						<legend>Mounting options</legend>	<img src="images/info-circle.svg" width="20px" height="20px" onclick="openMount()">
+					</a>
+					<ul>
+						<div style="font-size: 20px; margin: 10px 0 10px 0;">
+							No background:
+						</div>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="mounting" id="glassOnly" value="Glass only" checked
+								data-backgroundType="glassOnly"
+								data-backgroundCost="0"
+								onclick="neonBackgroundSetter(this)";
+								/>
+								<label for="glassOnly">
+									Glass only
+								</label>
+							</div>
+						</li>
+						<div style="font-size: 20px; margin: 10px 0 10px 0;">
+							Acrylic background:
+						</div>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="mounting" id="clear-acrylic" value="Transparent Acrylic"
+								data-backgroundType="clear-acrylic"
+								data-backgroundCost="30"
+								onclick="neonBackgroundSetter(this)";
+								/>
+								<label for="clear-acrylic">
+									Transparent Acrylic
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="mounting" id="white-acrylic" value="White Acrylic"
+								data-backgroundType="white-acrylic"
+								data-backgroundCost="30"
+								onclick="neonBackgroundSetter(this)";
+								/>
+								<label for="white-acrylic">
+									White Acrylic
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="mounting" id="black-acrylic" value="Black Acrylic"
+								data-backgroundType="black-acrylic"
+								data-backgroundCost="30"
+								onclick="neonBackgroundSetter(this)";
+								/>
+								<label for="black-acrylic">
+									Black Acrylic
+								</label>
+							</div>
+						</li>
+						<div style="font-size: 20px; margin: 10px 0 10px 0;">
+							Aluminium background:
+						</div>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="mounting" id="aluminium" value="Aluminium"
+								data-backgroundType="aluminium"
+								data-backgroundCost="50"
+								onclick="neonBackgroundSetter(this)";
+								/>
+								<label for="aluminium">
+									Raw
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="mounting" id="white-aluminium" value="White Aluminium"
+								data-backgroundType="white-aluminium"
+								data-backgroundCost="50"
+								onclick="neonBackgroundSetter(this)";
+								/>
+								<label for="white-aluminium">
+									White Aluminium
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="mounting" id="black-aluminium" value="Black Aluminium"
+								data-backgroundType="black-aluminium"
+								data-backgroundCost="50"
+								onclick="neonBackgroundSetter(this)";
+								/>
+								<label for="black-aluminium">
+									Black Aluminium
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn" onclick="openNav()">
+								<input type="radio" name="mounting" id="ral-system" value="Ral System"
+								data-backgroundType="ral-system"
+								data-backgroundCost="50"
+								onclick="neonBackgroundSetter(this)";
+								/>
+								<label for="ral-system">
+									Ral Color System
+								</label>
+							</div>
+						</li>
+					</ul>
+				</li>
+
+				<li id="electricalsOpt">
+					<a href="#electricalsOpt">
+						<legend>Electricals</legend>
+					</a>
+					<ul>
+						<div style="font-size: 20px; margin: 10px 0 10px 0;">
+							Equipment color:
+							<img class="infobtn" src="images/info-circle.svg" width="20px" height="20px" onclick="openElec()">
+						</div>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="wireColor" id="black" value="Black" checked 
+								data-wireColor="black"
+								onclick="changeWireColor(this)";
+								/>
+								<label for="black">
+									Black
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="wireColor" id="white" value="White"
+								data-wireColor="white"
+								onclick="changeWireColor(this)";
+								/>
+								<label for="white">
+									White
+								</label>
+							</div>
+						</li>
+						<div style="font-size: 20px; margin: 10px 0 10px 0;">
+							Transformer type:
+							<img class="infobtn shorter" src="images/info-circle.svg" width="20px" height="20px" onclick="openElectrt()">
+						</div>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="indoorOrOutdoor" id="indoors" value="Indoors" checked
+								/>
+								<label for="indoors">
+									Indoors
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="indoorOrOutdoor" id="outdoors" value="Outdoors"
+								/>
+								<label for="outdoors">
+									Indoors/Outdoors
+								</label>
+							</div>
+						</li>
+					</ul>
+				</li>
+			<!--
+				Template to create radio buttons to add new neon size
+				<div class="radiobtn">
+					<input type="radio" name="size" id="" value="Size"
+					data-neonSize=""
+					onclick="neonSizeSetter(this)";
+					/>
+					<label for="">
+						Size
+					</label>
+				</div>
+			-->
+			
+				<li id="sizeOpt">
+					<a href="#sizeOpt">
+						<legend>Size</legend>
+					</a>
+					<ul>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="size" id="standard" value="Standard" checked
+								data-neonSize="standard"
+								onclick="neonSizeSetter(this)";
+								/>
+								<label for="standard">
+									Standard
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="size" id="medium" value="Medium"
+								data-neonSize="medium"
+								onclick="neonSizeSetter(this)";
+								/>
+								<label for="medium">
+									Medium
+								</label>
+							</div>
+						</li>
+						<li>
+							<div class="radiobtn">
+								<input type="radio" name="size" id="large" value="Large"
+								data-neonSize="large"
+								onclick="neonSizeSetter(this)";
+								/>
+								<label for="large">
+									Large
+								</label>
+							</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</form>
+
+		<div id="mnt" class="overlay">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeMount()">&times;</a>
+		</div>
+		<div id="elec" class="overlay">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeElec()">&times;</a>
+		</div>
+		<div id="electrt" class="overlay">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeElectrt()">&times;</a>
+		</div>
+		<div id="myNav" class="overlay">
+		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		  <div class="overlay-content">
+		    <div class="overlay-content-menu">
+			    <a href="#" onclick="openyellow();">Yellow</a>
+			    <a href="#" onclick="openorange();">Orange</a>
+			    <a href="#" onclick="openred();">Red</a>
+			    <a href="#" onclick="openviolet();">Violet</a>
+			    <a href="#" onclick="openblue();">Blue</a>
+			    <a href="#" onclick="opengreen();">Green</a>
+			    <a href="#" onclick="opengrey();">Grey</a>
+			    <a href="#" onclick="openbrown();">Brown</a>
+			    <a href="#" onclick="openblack();">Black &amp; white</a>
+			</div>
+			<div class="overlay-content-options" id="yellow-content">
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1000" value="1000"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1000" for="1000">
+						RAL 1000
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1001" value="1001"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1001" for="1001">
+						RAL 1001
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1002" value="1002"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1002" for="1002">
+						RAL 1002
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1003" value="1003"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1003" for="1003">
+						RAL 1003
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1004" value="1004"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1004" for="1004">
+						RAL 1004
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1005" value="1005"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1005" for="1005">
+						RAL 1005
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1006" value="1006"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1006" for="1006">
+						RAL 1006
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1007" value="1007"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1007" for="1007">
+						RAL 1007
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1011" value="1011"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1011" for="1011">
+						RAL 1011
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1012" value="1012"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1012" for="1012">
+						RAL 1012
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1013" value="1013"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1013" for="1013">
+						RAL 1013
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1014" value="1014"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1014" for="1014">
+						RAL 1014
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1015" value="1015"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1015" for="1015">
+						RAL 1015
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1016" value="1016"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1016" for="1016">
+						RAL 1016
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1017" value="1017"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1017" for="1017">
+						RAL 1017
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1018" value="1018"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1018" for="1018">
+						RAL 1018
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1019" value="1019"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1019" for="1019">
+						RAL 1019
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1020" value="1020"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1020" for="1020">
+						RAL 1020
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1021" value="1021"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1021" for="1021">
+						RAL 1021
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1023" value="1023"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1023" for="1023">
+						RAL 1023
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1024" value="1024"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1024" for="1024">
+						RAL 1024
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1026" value="1026"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1026" for="1026">
+						RAL 1026
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1027" value="1027"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1027" for="1027">
+						RAL 1027
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1028" value="1028"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1028" for="1028">
+						RAL 1028
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1032" value="1032"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1032" for="1032">
+						RAL 1032
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1033" value="1033"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1033" for="1033">
+						RAL 1033
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1034" value="1034"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1034" for="1034">
+						RAL 1034
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1035" value="1035"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1035" for="1035">
+						RAL 1035
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1036" value="1036"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1036" for="1036">
+						RAL 1036
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="1037" value="1037"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a1037" for="1037">
+						RAL 1037
+					</label>
+				</div>
+			</div>
+			<div class="overlay-content-options" id="orange-content">
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="2000" value="2000"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a2000" for="2000">
+						RAL 2000
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="2001" value="2001"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a2001" for="2001">
+						RAL 2001
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="2002" value="2002"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a2002" for="2002">
+						RAL 2002
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="2003" value="2003"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a2003" for="2003">
+						RAL 2003
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="2004" value="2004"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a2004" for="2004">
+						RAL 2004
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="2005" value="2005"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a2005" for="2005">
+						RAL 2005
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="2007" value="2007"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a2007" for="2007">
+						RAL 2007
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="2008" value="2008"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a2008" for="2008">
+						RAL 2008
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="2009" value="2009"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a2009" for="2009">
+						RAL 2009
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="2010" value="2010"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a2010" for="2010">
+						RAL 2010
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="2011" value="2011"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a2011" for="2011">
+						RAL 2011
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="2012" value="2012"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a2012" for="2012">
+						RAL 2012
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="2013" value="2013"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a2013" for="2013">
+						RAL 2013
+					</label>
+				</div>
+			</div>
+			<div class="overlay-content-options" id="red-content">
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3000" value="3000"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3000" for="3000">
+						RAL 3000
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3001" value="3001"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3001" for="3001">
+						RAL 3001
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3002" value="3002"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3002" for="3002">
+						RAL 3002
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3003" value="3003"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3003" for="3003">
+						RAL 3003
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3004" value="3004"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3004" for="3004">
+						RAL 3004
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3005" value="3005"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3005" for="3005">
+						RAL 3005
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3007" value="3007"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3007" for="3007">
+						RAL 3007
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3009" value="3009"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3009" for="3009">
+						RAL 3009
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3011" value="3011"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3011" for="3011">
+						RAL 3011
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3012" value="3012"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3012" for="3012">
+						RAL 3012
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3013" value="3013"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3013" for="3013">
+						RAL 3013
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3014" value="3014"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3014" for="3014">
+						RAL 3014
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3015" value="3015"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3015" for="3015">
+						RAL 3015
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3016" value="3016"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3016" for="3016">
+						RAL 3016
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3017" value="3017"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3017" for="3017">
+						RAL 3017
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3018" value="3018"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3018" for="3018">
+						RAL 3018
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3020" value="3020"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3020" for="3020">
+						RAL 3020
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3022" value="3022"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3022" for="3022">
+						RAL 3022
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3024" value="3024"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3024" for="3024">
+						RAL 3024
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3026" value="3026"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3026" for="3026">
+						RAL 3026
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3027" value="3027"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3027" for="3027">
+						RAL 3027
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3028" value="3028"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3028" for="3028">
+						RAL 3028
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3031" value="3031"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3031" for="3031">
+						RAL 3031
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3032" value="3032"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3032" for="3032">
+						RAL 3032
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="3033" value="3033"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a3033" for="3033">
+						RAL 3033
+					</label>
+				</div>
+			</div>
+			<div class="overlay-content-options" id="violet-content">
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="4001" value="4001"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a4001" for="4001">
+						RAL 4001
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="4002" value="4002"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a4002" for="4002">
+						RAL 4002
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="4003" value="4003"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a4003" for="4003">
+						RAL 4003
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="4004" value="4004"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a4004" for="4004">
+						RAL 4004
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="4005" value="4005"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a4005" for="4005">
+						RAL 4005
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="4006" value="4006"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a4006" for="4006">
+						RAL 4006
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="4007" value="4007"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a4007" for="4007">
+						RAL 4007
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="4008" value="4008"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a4008" for="4008">
+						RAL 4008
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="4009" value="4009"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a4009" for="4009">
+						RAL 4009
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="4010" value="4010"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a4010" for="4010">
+						RAL 4010
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="4011" value="4011"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a4011" for="4011">
+						RAL 4011
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="4012" value="4012"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a4012" for="4012">
+						RAL 4012
+					</label>
+				</div>
+			</div>
+			<div class="overlay-content-options" id="blue-content">
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5000" value="5000"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5000" for="5000">
+						RAL 5000
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5001" value="5001"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5001" for="5001">
+						RAL 5001
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5002" value="5002"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5002" for="5002">
+						RAL 5002
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5003" value="5003"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5003" for="5003">
+						RAL 5003
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5004" value="5004"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5004" for="5004">
+						RAL 5004
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5005" value="5005"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5005" for="5005">
+						RAL 5005
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5007" value="5007"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5007" for="5007">
+						RAL 5007
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5008" value="5008"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5008" for="5008">
+						RAL 5008
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5009" value="5009"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5009" for="5009">
+						RAL 5009
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5010" value="5010"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5010" for="5010">
+						RAL 5010
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5011" value="5011"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5011" for="5011">
+						RAL 5011
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5012" value="5012"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5012" for="5012">
+						RAL 5012
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5013" value="5013"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5013" for="5013">
+						RAL 5013
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5014" value="5014"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5014" for="5014">
+						RAL 5014
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5015" value="5015"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5015" for="5015">
+						RAL 5015
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5017" value="5017"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5017" for="5017">
+						RAL 5017
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5018" value="5018"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5018" for="5018">
+						RAL 5018
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5019" value="5019"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5019" for="5019">
+						RAL 5019
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5020" value="5020"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5020" for="5020">
+						RAL 5020
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5021" value="5021"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5021" for="5021">
+						RAL 5021
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5022" value="5022"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5022" for="5022">
+						RAL 5022
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5023" value="5023"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5023" for="5023">
+						RAL 5023
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5024" value="5024"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5024" for="5024">
+						RAL 5024
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5025" value="5025"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5025" for="5025">
+						RAL 5025
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="5026" value="5026"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a5026" for="5026">
+						RAL 5026
+					</label>
+				</div>
+			</div>
+			<div class="overlay-content-options" id="green-content">
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6000" value="6000"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6000" for="6000">
+						RAL 6000
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6001" value="6001"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6001" for="6001">
+						RAL 6001
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6002" value="6002"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6002" for="6002">
+						RAL 6002
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6003" value="6003"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6003" for="6003">
+						RAL 6003
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6004" value="6004"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6004" for="6004">
+						RAL 6004
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6005" value="6005"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6005" for="6005">
+						RAL 6005
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6006" value="6006"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6006" for="6006">
+						RAL 6006
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6007" value="6007"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6007" for="6007">
+						RAL 6007
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6008" value="6008"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6008" for="6008">
+						RAL 6008
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6009" value="6009"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6009" for="6009">
+						RAL 6009
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6010" value="6010"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6010" for="6010">
+						RAL 6010
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6011" value="6011"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6011" for="6011">
+						RAL 6011
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6012" value="6012"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6012" for="6012">
+						RAL 6012
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6013" value="6013"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6013" for="6013">
+						RAL 6013
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6014" value="6014"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6014" for="6014">
+						RAL 6014
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6015" value="6015"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6015" for="6015">
+						RAL 6015
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6016" value="6016"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6016" for="6016">
+						RAL 6016
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6017" value="6017"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6017" for="6017">
+						RAL 6017
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6018" value="6018"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6018" for="6018">
+						RAL 6018
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6019" value="6019"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6019" for="6019">
+						RAL 6019
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6020" value="6020"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6020" for="6020">
+						RAL 6020
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6021" value="6021"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6021" for="6021">
+						RAL 6021
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6022" value="6022"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6022" for="6022">
+						RAL 6022
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6024" value="6024"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6024" for="6024">
+						RAL 6024
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6025" value="6025"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6025" for="6025">
+						RAL 6025
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6026" value="6026"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6026" for="6026">
+						RAL 6026
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6027" value="6027"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6027" for="6027">
+						RAL 6027
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6028" value="6028"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6028" for="6028">
+						RAL 6028
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6029" value="6029"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6029" for="6029">
+						RAL 6029
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6032" value="6032"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6032" for="6032">
+						RAL 6032
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6033" value="6033"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6033" for="6033">
+						RAL 6033
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6034" value="6034"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6034" for="6034">
+						RAL 6034
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6035" value="6035"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6035" for="6035">
+						RAL 6035
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6036" value="6036"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6036" for="6036">
+						RAL 6036
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6037" value="6037"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6037" for="6037">
+						RAL 6037
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="6038" value="6038"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a6038" for="6038">
+						RAL 6038
+					</label>
+				</div>
+			</div>
+			<div class="overlay-content-options" id="grey-content">
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7000" value="7000"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7000" for="7000">
+						RAL 7000
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7001" value="7001"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7001" for="7001">
+						RAL 7001
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7002" value="7002"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7002" for="7002">
+						RAL 7002
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7003" value="7003"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7003" for="7003">
+						RAL 7003
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7004" value="7004"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7004" for="7004">
+						RAL 7004
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7005" value="7005"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7005" for="7005">
+						RAL 7005
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7006" value="7006"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7006" for="7006">
+						RAL 7006
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7008" value="7008"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7008" for="7008">
+						RAL 7008
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7009" value="7009"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7009" for="7009">
+						RAL 7009
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7010" value="7010"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7010" for="7010">
+						RAL 7010
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7011" value="7011"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7011" for="7011">
+						RAL 7011
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7012" value="7012"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7012" for="7012">
+						RAL 7012
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7013" value="7013"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7013" for="7013">
+						RAL 7013
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7015" value="7015"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7015" for="7015">
+						RAL 7015
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7016" value="7016"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7016" for="7016">
+						RAL 7016
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7021" value="7021"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7021" for="7021">
+						RAL 7021
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7022" value="7022"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7022" for="7022">
+						RAL 7022
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7023" value="7023"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7023" for="7023">
+						RAL 7023
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7024" value="7024"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7024" for="7024">
+						RAL 7024
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7026" value="7026"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7026" for="7026">
+						RAL 7026
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7030" value="7030"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7030" for="7030">
+						RAL 7030
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7031" value="7031"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7031" for="7031">
+						RAL 7031
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7032" value="7032"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7032" for="7032">
+						RAL 7032
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7033" value="7033"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7033" for="7033">
+						RAL 7033
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7034" value="7034"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7034" for="7034">
+						RAL 7034
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7035" value="7035"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7035" for="7035">
+						RAL 7035
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7036" value="7036"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7036" for="7036">
+						RAL 7036
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7037" value="7037"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7037" for="7037">
+						RAL 7037
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7038" value="7038"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7038" for="7038">
+						RAL 7038
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7039" value="7039"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7039" for="7039">
+						RAL 7039
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7040" value="7040"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7040" for="7040">
+						RAL 7040
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7042" value="7042"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7042" for="7042">
+						RAL 7042
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7043" value="7043"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7043" for="7043">
+						RAL 7043
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7044" value="7044"
+						onclick="updateNeonView()";
+					/ >
+					<label class="a7044"  for="7044">
+						RAL 7044
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7045" value="7045"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7045" for="7045">
+						RAL 7045
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7046" value="7046"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7046" for="7046">
+						RAL 7046
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7047" value="7047"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7047" for="7047">
+						RAL 7047
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="7048" value="7048"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a7048" for="7048">
+						RAL 7048
+					</label>
+				</div>
+			</div>
+			<div class="overlay-content-options" id="brown-content">
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8000" value="8000"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8000" for="8000">
+						RAL 8000
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8001" value="8001"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8001" for="8001">
+						RAL 8001
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8002" value="8002"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8002" for="8002">
+						RAL 8002
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8003" value="8003"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8003" for="8003">
+						RAL 8003
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8004" value="8004"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8004" for="8004">
+						RAL 8004
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8007" value="8007"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8007" for="8007">
+						RAL 8007
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8008" value="8008"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8008" for="8008">
+						RAL 8008
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8011" value="8011"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8011" for="8011">
+						RAL 8011
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8012" value="8012"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8012" for="8012">
+						RAL 8012
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8014" value="8014"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8014" for="8014">
+						RAL 8014
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8015" value="8015"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8015" for="8015">
+						RAL 8015
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8016" value="8016"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8016" for="8016">
+						RAL 8016
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8017" value="8017"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8017" for="8017">
+						RAL 8017
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8019" value="8019"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8019" for="8019">
+						RAL 8019
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8022" value="8022"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8022" for="8022">
+						RAL 8022
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8023" value="8023"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8023" for="8023">
+						RAL 8023
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8024" value="8024"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8024" for="8024">
+						RAL 8024
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8025" value="8025"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8025" for="8025">
+						RAL 8025
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8028" value="8028"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8028" for="8028">
+						RAL 8028
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="8029" value="8029"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a8029" for="8029">
+						RAL 8029
+					</label>
+				</div>
+			</div>
+			<div class="overlay-content-options" id="black-content">
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="9001" value="9001"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a9001" for="9001">
+						RAL 9001
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="9002" value="9002"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a9002" for="9002">
+						RAL 9002
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="9003" value="9003"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a9003" for="9003">
+						RAL 9003
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="9004" value="9004"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a9004" for="9004">
+						RAL 9004
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="9005" value="9005"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a9005" for="9005">
+						RAL 9005
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="9006" value="9006"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a9006" for="9006">
+						RAL 9006
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="9007" value="9007"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a9007" for="9007">
+						RAL 9007
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="9010" value="9010"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a9010" for="9010">
+						RAL 9010
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="9011" value="9011"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a9011" for="9011">
+						RAL 9011
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="9016" value="9016"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a9016" for="9016">
+						RAL 9016
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="9017" value="9017"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a9017" for="9017">
+						RAL 9017
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="9018" value="9018"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a9018" for="9018">
+						RAL 9018
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="9022" value="9022"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a9022" for="9022">
+						RAL 9022
+					</label>
+				</div>
+				<div class="radiobtn">
+					<input type="radio" name="ralcolor" id="9023" value="9023"
+						onclick="updateNeonView()";
+					/ >
+					<label  class="a9023" for="9023">
+						RAL 9023
+					</label>
+				</div>
+			</div>
+		  </div>
+		</div>
+	
+	</div>
+
+	
+</body>
+
+<script src="js/jquery.js"></script>
+<script src="js/javascrpt.js"></script>
+<script src="js/fontchanger.js"></script>
+
+</html>
